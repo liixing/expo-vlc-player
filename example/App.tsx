@@ -1,73 +1,35 @@
-import { useEvent } from 'expo';
-import ExpoVlcPlayer, { ExpoVlcPlayerView } from 'expo-vlc-player';
-import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { useEvent } from "expo";
+import ExpoVlcPlayer, { ExpoVlcPlayerView } from "expo-vlc-player";
+import React from "react";
+import { useState } from "react";
+import { Button, View } from "react-native";
 
 export default function App() {
-  const onChangePayload = useEvent(ExpoVlcPlayer, 'onChange');
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.container}>
-        <Text style={styles.header}>Module API Example</Text>
-        <Group name="Constants">
-          <Text>{ExpoVlcPlayer.PI}</Text>
-        </Group>
-        <Group name="Functions">
-          <Text>{ExpoVlcPlayer.hello()}</Text>
-        </Group>
-        <Group name="Async functions">
-          <Button
-            title="Set value"
-            onPress={async () => {
-              await ExpoVlcPlayer.setValueAsync('Hello from JS!');
-            }}
-          />
-        </Group>
-        <Group name="Events">
-          <Text>{onChangePayload?.value}</Text>
-        </Group>
-        <Group name="Views">
-          <ExpoVlcPlayerView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
-          />
-        </Group>
-      </ScrollView>
-    </SafeAreaView>
+  // const onChangePayload = useEvent(ExpoVlcPlayer, "onChange");
+  const [source, setSource] = useState(
+    "https://streams.videolan.org/streams/mp4/Mr_MrsSmith-h264_aac.mp4"
   );
-}
 
-function Group(props: { name: string; children: React.ReactNode }) {
   return (
-    <View style={styles.group}>
-      <Text style={styles.groupHeader}>{props.name}</Text>
-      {props.children}
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ExpoVlcPlayerView
+        source={source}
+        style={{ width: "100%", height: "100%" }}
+      />
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+        <Button
+          title="Change source"
+          onPress={() => {
+            console.log("onPress");
+            setSource(
+              source ===
+                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                ? "https://streams.videolan.org/streams/mp4/Mr_MrsSmith-h264_aac.mp4"
+                : "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            );
+          }}
+        />
+      </View>
     </View>
   );
 }
-
-const styles = {
-  header: {
-    fontSize: 30,
-    margin: 20,
-  },
-  groupHeader: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-  group: {
-    margin: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#eee',
-  },
-  view: {
-    flex: 1,
-    height: 200,
-  },
-};

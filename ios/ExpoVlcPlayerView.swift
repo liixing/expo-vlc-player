@@ -4,35 +4,25 @@ import WebKit
 // This view will be used as a native component. Make sure to inherit from `ExpoView`
 // to apply the proper styling (e.g. border radius and shadows).
 class ExpoVlcPlayerView: ExpoView {
-  let webView = WKWebView()
-  let onLoad = EventDispatcher()
-  var delegate: WebViewDelegate?
+    private var playerViewController: VLCPlayerViewController!
+
+    @objc var source: URL = URL(string: "about:blank")! {
+      didSet {
+        playerViewController.playSource(url: source)
+      }
+    }
 
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
-    clipsToBounds = true
-    delegate = WebViewDelegate { url in
-      self.onLoad(["url": url])
-    }
-    webView.navigationDelegate = delegate
-    addSubview(webView)
+      playerViewController = VLCPlayerViewController()
+      playerViewController.view.frame = self.bounds
+      playerViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      self.addSubview(playerViewController.view)
   }
 
-  override func layoutSubviews() {
-    webView.frame = bounds
-  }
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      playerViewController.view.frame = self.bounds
+    }
 }
 
-class WebViewDelegate: NSObject, WKNavigationDelegate {
-  let onUrlChange: (String) -> Void
-
-  init(onUrlChange: @escaping (String) -> Void) {
-    self.onUrlChange = onUrlChange
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
-    if let url = webView.url {
-      onUrlChange(url.absoluteString)
-    }
-  }
-}

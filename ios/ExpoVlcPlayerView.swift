@@ -8,7 +8,7 @@ class ExpoVlcPlayerView: ExpoView {
 
   @objc var source: URL = URL(string: "about:blank")! {
     didSet {
-      playerViewController.playSource(url: source)
+      playerViewController.playSource(_url: source)
     }
   }
 

@@ -9,6 +9,10 @@ public class ExpoVlcPlayerModule: Module {
     // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
     // The module will be accessible from `requireNativeModule('ExpoVlcPlayer')` in JavaScript.
     Name("ExpoVlcPlayer")
+      
+    Function("isPictureInPictureSupported") { () -> Bool in
+        return AVPictureInPictureController.isPictureInPictureSupported()
+    }
 
     // Enables the module to be used as a native view. Definition components that are accepted as part of the
     // view definition: Prop, Events.

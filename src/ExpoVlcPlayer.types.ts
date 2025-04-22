@@ -46,5 +46,5 @@ export type ChangeEventPayload = {
 export type ExpoVlcPlayerViewProps = {
   source: string;
   style?: StyleProp<ViewStyle>;
-  onLoad?: (params: OnLoadEventPayload) => void;
+  onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
 };

@@ -24,7 +24,7 @@ public class ExpoVlcPlayerModule: Module {
         }
       }
 
-      Events("onLoad")
+      Events("onLoad", "onBuffering")
     }
   }
 }

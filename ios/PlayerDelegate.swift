@@ -15,15 +15,13 @@ extension VLCPlayerViewController : VLCMediaPlayerDelegate {
         }
 
         // 使用 switch 语句处理状态
-        switch state {
+     switch state {
         case .buffering:
             print("Media player is buffering...")
         case .playing:
-            print("Media player is playing.")
+            print("Media player is playing...")
         case .paused:
             print("Media player is paused.")
-        case .stopped:
-            print("Media player is stopped.")
         case .stopping:
             print("Media player has ended.")
         case .error:
@@ -31,6 +29,16 @@ extension VLCPlayerViewController : VLCMediaPlayerDelegate {
         default:
             print("Unknown media player state: \(state)")
         }
+    }
+    
+    func mediaPlayerTimeChanged(_ aNotification: Notification) {
+        let currentTime = mediaPlayer?.time.intValue
+        let remainingTime = mediaPlayer?.remainingTime?.intValue
+        let payload: [String: Int32?] = [
+            "currentTime": currentTime,
+            "remainingTime": remainingTime
+        ]
+        self.onProgress(payload)
     }
 }
 

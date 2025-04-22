@@ -10,6 +10,11 @@ export type Track = {
   id: number;
 
   /**
+   * Track name
+   */
+  name: string;
+
+  /**
    * Whether the track is the selected track
    */
   isDefault: boolean;
@@ -35,6 +40,11 @@ export type OnLoadEventPayload = {
   textTracks: Track[];
 };
 
+export type OnProgressEventPayload = {
+  currentTime: number;
+  remainingTime: number;
+};
+
 export type ExpoVlcPlayerModuleEvents = {
   onChange: (params: ChangeEventPayload) => void;
 };
@@ -45,6 +55,11 @@ export type ChangeEventPayload = {
 
 export type ExpoVlcPlayerViewProps = {
   source: string;
+  pause?: boolean;
+  playbackRate?:number
+  seek?:number
   style?: StyleProp<ViewStyle>;
   onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
+  // onBuffering?: (event: { nativeEvent: OnBufferingEventPayload }) => void;
+  onProgress?: (event: { nativeEvent: OnProgressEventPayload }) => void;
 };

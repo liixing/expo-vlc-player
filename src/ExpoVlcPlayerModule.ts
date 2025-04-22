@@ -1,12 +1,10 @@
-import { NativeModule, requireNativeModule } from 'expo';
+import { NativeModule, requireNativeModule } from "expo";
 
-import { ExpoVlcPlayerModuleEvents } from './ExpoVlcPlayer.types';
+import { ExpoVlcPlayerModuleEvents } from "./ExpoVlcPlayer.types";
 
 declare class ExpoVlcPlayerModule extends NativeModule<ExpoVlcPlayerModuleEvents> {
-  PI: number;
-  hello(): string;
-  setValueAsync(value: string): Promise<void>;
+  isPictureInPictureSupported(): Promise<boolean>;
 }
 
 // This call loads the native module object from the JSI.
-export default requireNativeModule<ExpoVlcPlayerModule>('ExpoVlcPlayer');
+export default requireNativeModule<ExpoVlcPlayerModule>("ExpoVlcPlayer");

@@ -29,8 +29,9 @@ class ExpoVlcPlayerView: ExpoView {
         }
     }
     
-    @objc var seek:Float = 0{
+    @objc var seek: Float = 0.0{
         didSet{
+            print("seek updated to: \(seek)")
             playerViewController.seekTime(time: seek)
         }
     }

@@ -13,32 +13,34 @@ export default function App() {
   const [pause, setPause] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [seek, setSeek] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  // const [currentTime, setCurrentTime] = useState(0);
+  // const [duration, setDuration] = useState(0);
 
-  const onSeek = (time: number) => {
-    // 确保 time 在 0 到 duration 之间
-    const clampedTime = Math.max(0, Math.min(time, duration));
-    setSeek(clampedTime);
-  };
+  // const currentTime = useSharedValue(0);
+
+  // const onSeek = (time: number) => {
+  //   // 确保 time 在 0 到 duration 之间
+  //   const clampedTime = Math.max(0, Math.min(time, duration));
+  //   setSeek(clampedTime);
+  // };
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ExpoVlcPlayerView
         source={source}
         style={{ width: "100%", height: "100%" }}
-        onLoad={({ nativeEvent }) => {
-          setDuration(nativeEvent.duration / 1000);
-        }}
-        onProgress={({ nativeEvent }) => {
-          setCurrentTime(nativeEvent.currentTime / 1000);
-        }}
+        // onLoad={({ nativeEvent }) => {
+        //   setDuration(nativeEvent.duration / 1000);
+        // }}
+        // onProgress={({ nativeEvent }) => {
+        //   setCurrentTime(nativeEvent.currentTime / 1000);
+        // }}
         pause={pause}
         playbackRate={playbackRate}
         seek={seek}
       />
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-        <Button title={`seek`} onPress={() => onSeek(currentTime + 15)} />
+        <Button title={`seek`} onPress={() => setSeek(30)} />
         <Button
           title="Change source"
           onPress={() => {

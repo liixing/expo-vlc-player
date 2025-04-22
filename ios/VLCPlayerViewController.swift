@@ -88,12 +88,13 @@ class VLCPlayerViewController: UIViewController {
     
     func seekTime(time:Float){
         print(time,"seek")
-        guard time > 0.0, let player = mediaPlayer, player.isSeekable else {
+        guard time > 0.0 else {
             return
         }
         let seekTime = Int32 (time * 1000 )
+        
        
-        player.time = VLCTime(int:seekTime)
+        mediaPlayer?.time = VLCTime(int:seekTime)
     }
 
     func release() {

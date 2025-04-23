@@ -23,7 +23,7 @@ public struct OnLoadEventPayload {
 }
 
 class VLCPlayerViewController: UIViewController {
-    public var mediaPlayer: VLCMediaPlayer?
+    public var mediaPlayer: VLCMediaPlayer? = VLCMediaPlayer()
     private var currentURL: URL?
     public var artworkDataTask: URLSessionDataTask?
     public var isScreenFilled: Bool = false
@@ -93,10 +93,10 @@ class VLCPlayerViewController: UIViewController {
 
     func playSource(url: URL) {
         guard url != currentURL else { return }
-        mediaPlayer = VLCMediaPlayer()
         mediaPlayer?.media = VLCMedia(url: url)
         mediaPlayer?.delegate = self
         mediaPlayer?.media?.delegate = self
+        
         mediaPlayer?.drawable = self.videoOutputView
         try? AVAudioSession.sharedInstance().setActive(
             false, options: .notifyOthersOnDeactivation)
@@ -107,11 +107,6 @@ class VLCPlayerViewController: UIViewController {
         let withoptions: VLCMediaParsingOptions = [
             .parseLocal, .parseNetwork, .fetchNetwork, .doInteract,
         ]
-
-        if startTime > 0 {
-            seekTime(time: startTime)
-        }
-        
 
         mediaPlayer?.play()
         mediaPlayer?.media?.parse(options: withoptions, timeout: timeoutValue)
@@ -131,9 +126,23 @@ class VLCPlayerViewController: UIViewController {
         guard time > 0.0 else {
             return
         }
-        let seekTime = Int32(time * 1000)
-
-        mediaPlayer?.time = VLCTime(int: seekTime)
+        guard let player = mediaPlayer else {
+            print("Media player is not initialized.")
+            return
+        }
+        
+        // 检查播放器状态是否允许跳转
+        if player.isSeekable {
+            let seekTime = Int32(time * 1000)
+            player.time = VLCTime(int: seekTime)
+            print("Seeking to time: \(seekTime) ms")
+            
+            // 如果播放器当前未播放，尝试重新播放
+            if !player.isPlaying {
+                player.play()
+                print("Player was not playing, restarting playback after seek.")
+            }
+        }
     }
 
     func setAudioTackAtIndex(index: Int32) {
@@ -197,13 +206,17 @@ class VLCPlayerViewController: UIViewController {
 
 
     deinit {
-        if mediaPlayer != nil {
-            mediaPlayer?.pause()
-            currentURL = nil
-            mediaPlayer?.media?.delegate = nil
-            mediaPlayer?.delegate = nil
-            mediaPlayer?.drawable = nil
+        print("VLCPlayerViewController deinit called")
+        if let player = mediaPlayer {
+            player.stop() // 再次确保停止
+            player.delegate = nil
+            player.drawable = nil
+            player.media?.delegate = nil
+            mediaPlayer = nil // 置空引用
         }
+        currentURL = nil
+        artworkDataTask?.cancel()
+        artworkDataTask = nil
     }
 
 }

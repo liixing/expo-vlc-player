@@ -36,12 +36,6 @@ class ExpoVlcPlayerView: ExpoView {
         }
     }
     
-    @objc var startTime: Float = 0.0{
-        didSet{
-            playerViewController.startTime = startTime
-        }
-    }
-    
     
     @objc var audioTrackIndex: Int32 = -2 {
         didSet{
@@ -91,4 +85,13 @@ class ExpoVlcPlayerView: ExpoView {
         super.layoutSubviews()
         playerViewController.view.frame = self.bounds
     }
+    
+    deinit {
+        print("ExpoVlcPlayerView deinit called")
+        // 移除 playerViewController 的视图
+        playerViewController.view.removeFromSuperview()
+        // 置空引用，确保 ARC 回收
+        playerViewController = nil
+    }
+    
 }

@@ -64,13 +64,6 @@ public class ExpoVlcPlayerModule: Module {
                 }
             }
             
-            Prop("startTime"){
-              (view: ExpoVlcPlayerView, startTime: Float) in
-                if view.startTime != startTime {
-                    view.startTime = startTime
-                }
-            }
-
             Events("onLoad", "onPlayingChange", "onProgress","onEnd")
         }
     }

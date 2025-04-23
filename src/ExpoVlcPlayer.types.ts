@@ -17,7 +17,7 @@ export type Track = {
   /**
    * Whether the track is the selected track
    */
-  isDefault: boolean;
+  isSelected: boolean;
 };
 
 export type OnLoadEventPayload = {

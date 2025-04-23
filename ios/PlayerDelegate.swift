@@ -16,8 +16,13 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
 
         // 使用 switch 语句处理状态
         switch state {
+        case .opening:
+            print("Media player opening..")
+            break
         case .buffering:
-            self.onPlayingChange( ["isPlaying": false])
+            self.onPlayingChange(["isPlaying": false])
+            break
+        case .playing:
             break
         case .paused:
             self.onPlayingChange(["isPlaying": false])

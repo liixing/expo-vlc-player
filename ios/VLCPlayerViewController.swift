@@ -27,7 +27,6 @@ class VLCPlayerViewController: UIViewController {
     private var currentURL: URL?
     public var artworkDataTask: URLSessionDataTask?
     public var isScreenFilled: Bool = false
-    public var startTime: Float = 0
 
     let onLoad: ([String: Any]) -> Void
     let onPlayingChange: ([String: Bool]) -> Void

@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "expo.modules.vlcplayer.example"
+      "bundleIdentifier": "expo.modules.vlcplayer.example",
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {
@@ -23,6 +24,14 @@
       },
       "package": "expo.modules.vlcplayer.example"
     },
+    "plugins": [
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }

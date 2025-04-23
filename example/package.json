@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "expo": "~52.0.46",
+    "expo-screen-orientation": "~8.0.4",
     "react": "18.3.1",
     "react-native": "0.76.9"
   },

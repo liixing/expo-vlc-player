@@ -2,10 +2,14 @@ import { useEvent } from "expo";
 import ExpoVlcPlayer, { ExpoVlcPlayerView } from "expo-vlc-player";
 import React from "react";
 import { useState } from "react";
-import { Button, View } from "react-native";
+import { Button, useWindowDimensions, View } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function App() {
   // const onChangePayload = useEvent(ExpoVlcPlayer, "onChange");
+
+  const { width, height } = useWindowDimensions();
+  const isLandScape = width > height;
   const [source, setSource] = useState(
     "https://streams.videolan.org/streams/mp4/Mr_MrsSmith-h264_aac.mp4"
   );
@@ -15,6 +19,19 @@ export default function App() {
   const [seek, setSeek] = useState(0);
 
   const [isFull, setIsFull] = useState(true);
+
+  const toggleFull = async () => {
+    await ScreenOrientation.unlockAsync();
+    if (isLandScape) {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    } else {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+      );
+    }
+  };
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -34,13 +51,12 @@ export default function App() {
         onPlayingChange={({ nativeEvent }) => {
           console.log(nativeEvent.isPlaying, "isPlaying");
         }}
-        isFillScreen={isFull}
         onEnd={() => {
           console.log("endVideo");
         }}
       />
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-        <Button title={`seek`} onPress={() => setIsFull(!isFull)} />
+        <Button title={`full`} onPress={toggleFull} />
         <Button
           title="Change source"
           onPress={() => {

@@ -76,6 +76,7 @@ extension VLCPlayerViewController: VLCMediaDelegate {
         ]
 
         self.onLoad(payload)
+        self.toggleFillScreen(isFull: isScreenFilled)
     }
 
     func updateMetaData(Media: VLCMedia) {

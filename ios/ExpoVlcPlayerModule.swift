@@ -39,13 +39,39 @@ public class ExpoVlcPlayerModule: Module {
             
             Prop("seek"){
               (view: ExpoVlcPlayerView, seek: Float) in
-                print("Incoming seek: \(seek), Current seek: \(view.seek)")
                 if view.seek != seek {
                     view.seek = seek
                 }
             }
+            
+            Prop("audioTrackIndex"){
+                (view: ExpoVlcPlayerView, audioTrackIndex: Int32?) in
+                if view.audioTrackIndex != audioTrackIndex && audioTrackIndex != nil{
+                    view.audioTrackIndex = audioTrackIndex!
+                }
+            }
+            
+            Prop("textTrackIndex"){
+                (view: ExpoVlcPlayerView, textTrackIndex: Int32?) in
+                if view.textTrackIndex != textTrackIndex && textTrackIndex != nil{
+                    view.textTrackIndex = textTrackIndex!
+                }
+            }
+            
+            Prop("isFillScreen") { (view: ExpoVlcPlayerView, isFillScreen: Bool) in
+                if view.isFillScreen != isFillScreen {
+                    view.isFillScreen = isFillScreen
+                }
+            }
+            
+            Prop("startTime"){
+              (view: ExpoVlcPlayerView, startTime: Float) in
+                if view.startTime != startTime {
+                    view.startTime = startTime
+                }
+            }
 
-            Events("onLoad", "onBuffering", "onProgress")
+            Events("onLoad", "onPlayingChange", "onProgress","onEnd")
         }
     }
 }

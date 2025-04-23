@@ -6,7 +6,7 @@
 //
 import VLCKit
 
-extension VLCPlayerViewController : VLCMediaPlayerDelegate {
+extension VLCPlayerViewController: VLCMediaPlayerDelegate {
     func mediaPlayerStateChanged(_ newState: VLCMediaPlayerState) {
         // 使用 guard let 安全解包可选值
         guard let state = mediaPlayer?.state else {
@@ -15,30 +15,34 @@ extension VLCPlayerViewController : VLCMediaPlayerDelegate {
         }
 
         // 使用 switch 语句处理状态
-     switch state {
+        switch state {
         case .buffering:
-            print("Media player is buffering...")
-        case .playing:
-            print("Media player is playing...")
+            self.onPlayingChange( ["isPlaying": false])
+            break
         case .paused:
-            print("Media player is paused.")
+            self.onPlayingChange(["isPlaying": false])
+            break
+        case .stopped:
+            break
         case .stopping:
-            print("Media player has ended.")
+            self.onPlayingChange(["isPlaying": false])
+            self.onEnd(["isEnd": true])
+            break
         case .error:
             print("Media player encountered an error.")
+            break
         default:
             print("Unknown media player state: \(state)")
         }
     }
-    
+
     func mediaPlayerTimeChanged(_ aNotification: Notification) {
-        let currentTime = mediaPlayer?.time.intValue
-        let remainingTime = mediaPlayer?.remainingTime?.intValue
-        let payload: [String: Int32?] = [
+        let currentTime = mediaPlayer?.time.intValue ?? 0
+        let remainingTime = mediaPlayer?.remainingTime?.intValue ?? 0
+        let payload: [String: Int32] = [
             "currentTime": currentTime,
-            "remainingTime": remainingTime
+            "remainingTime": remainingTime,
         ]
         self.onProgress(payload)
     }
 }
-

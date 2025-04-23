@@ -8,8 +8,9 @@ class ExpoVlcPlayerView: ExpoView {
     public var playerViewController: VLCPlayerViewController!
 
     let onLoad = EventDispatcher()
-    let onBuffering = EventDispatcher()
+    let onPlayingChange = EventDispatcher()
     let onProgress = EventDispatcher()
+    let onEnd = EventDispatcher()
 
     @objc var source: URL = URL(string: "about:blank")! {
         didSet {
@@ -31,8 +32,33 @@ class ExpoVlcPlayerView: ExpoView {
     
     @objc var seek: Float = 0.0{
         didSet{
-            print("seek updated to: \(seek)")
             playerViewController.seekTime(time: seek)
+        }
+    }
+    
+    @objc var startTime: Float = 0.0{
+        didSet{
+            playerViewController.startTime = startTime
+        }
+    }
+    
+    
+    @objc var audioTrackIndex: Int32 = -2 {
+        didSet{
+            playerViewController.setAudioTackAtIndex(index: audioTrackIndex)
+        }
+    }
+    
+    @objc var textTrackIndex: Int32 = -2 {
+        didSet{
+            playerViewController.setTextTackAtIndex(index: textTrackIndex)
+        }
+    }
+    
+    @objc var isFillScreen: Bool = false {
+        didSet {
+            playerViewController.toggleFillScreen(isFull: isFillScreen)
+            playerViewController.isScreenFilled = isFillScreen
         }
     }
     
@@ -44,11 +70,14 @@ class ExpoVlcPlayerView: ExpoView {
             onVideoLoad: { [weak self] payload in
                 self?.onLoad(payload)
             },
-            onVideoBuffering: { [weak self] payload in
-                self?.onBuffering(payload)
+            onVideoPlayingChange: { [weak self] (payload:[String:Bool]) in
+                self?.onPlayingChange(payload)
             },
-            onVideoProgress: { [weak self] payload in
+            onVideoProgress: { [weak self] (payload:[String:Int32]) in
                 self?.onProgress(payload)
+            },
+            onVideoEnd: { [weak self] payload in
+                self?.onEnd(payload)
             }
         )
         playerViewController.view.frame = self.bounds

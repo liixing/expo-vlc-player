@@ -5,6 +5,7 @@
       "name": "expo-vlc-player-example",
       "dependencies": {
         "expo": "~52.0.46",
+        "expo-screen-orientation": "~8.0.4",
         "react": "18.3.1",
         "react-native": "0.76.9",
       },
@@ -689,6 +690,8 @@
     "expo-modules-autolinking": ["expo-modules-autolinking@2.0.8", "", { "dependencies": { "@expo/spawn-async": "^1.7.2", "chalk": "^4.1.0", "commander": "^7.2.0", "fast-glob": "^3.2.5", "find-up": "^5.0.0", "fs-extra": "^9.1.0", "require-from-string": "^2.0.2", "resolve-from": "^5.0.0" }, "bin": { "expo-modules-autolinking": "bin/expo-modules-autolinking.js" } }, "sha512-DezgnEYFQYic8hKGhkbztBA3QUmSftjaNDIKNAtS2iGJmzCcNIkatjN2slFDSWjSTNo8gOvPQyMKfyHWFvLpOQ=="],
 
     "expo-modules-core": ["expo-modules-core@2.2.3", "", { "dependencies": { "invariant": "^2.2.4" } }, "sha512-01QqZzpP/wWlxnNly4G06MsOBUTbMDj02DQigZoXfDh80vd/rk3/uVXqnZgOdLSggTs6DnvOgAUy0H2q30XdUg=="],
+
+    "expo-screen-orientation": ["expo-screen-orientation@8.0.4", "", { "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-kJrIZ/44+Gs5D5nyP6SXqTUbJEOsRgzk+nUcKeVZ0Vmx0szGrvSvhzdus7853xT/sqyAARsqBMlx626jAMu/Jg=="],
 
     "exponential-backoff": ["exponential-backoff@3.1.2", "", {}, "sha512-8QxYTVXUkuy7fIIoitQkPwGonB8F3Zj8eEO8Sqg9Zv/bkI7RJAzowee4gr81Hak/dUTpA2Z7VfQgoijjPNlUZA=="],
 

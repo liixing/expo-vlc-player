@@ -45,21 +45,32 @@ export type OnProgressEventPayload = {
   remainingTime: number;
 };
 
-export type ExpoVlcPlayerModuleEvents = {
-  onChange: (params: ChangeEventPayload) => void;
+export type OnPlayingChangeEventPayload = {
+  isPlaying: boolean;
 };
 
-export type ChangeEventPayload = {
-  value: string;
+export type SimpleEventPayload = {
+  target: number;
+};
+
+export type ExpoVlcPlayerModuleEvents = {
+  isPictureInPictureSupported: () => Promise<boolean>;
 };
 
 export type ExpoVlcPlayerViewProps = {
   source: string;
   pause?: boolean;
-  playbackRate?:number
-  seek?:number
+  playbackRate?: number;
+  seek?: number;
+  isFillScreen?: boolean;
+  startTime?: number;
   style?: StyleProp<ViewStyle>;
   onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
-  // onBuffering?: (event: { nativeEvent: OnBufferingEventPayload }) => void;
+  onPlayingChange?: (event: {
+    nativeEvent: OnPlayingChangeEventPayload;
+  }) => void;
   onProgress?: (event: { nativeEvent: OnProgressEventPayload }) => void;
+  onEnd?: (event: { nativeEvent: SimpleEventPayload }) => void;
+  textTrackIndex?: number;
+  audioTrackIndex?: number;
 };

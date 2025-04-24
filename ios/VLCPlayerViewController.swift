@@ -81,8 +81,6 @@ class VLCPlayerViewController: UIViewController {
     }
     
     
-    
-    
     override func viewWillTransition(
         to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator
     ) {
@@ -97,10 +95,10 @@ class VLCPlayerViewController: UIViewController {
         if mediaPlayer?.media != nil{
             self.cleanUpPlayer()
         }
-        
         mediaPlayer?.media = VLCMedia(url: url)
         mediaPlayer?.delegate = self
         mediaPlayer?.media?.delegate = self
+        mediaPlayer?.timeChangeUpdateInterval = 0.3
         mediaPlayer?.drawable = self.videoOutputView
         try? AVAudioSession.sharedInstance().setActive(
             false, options: .notifyOthersOnDeactivation)

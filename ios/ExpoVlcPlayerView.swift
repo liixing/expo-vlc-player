@@ -1,6 +1,7 @@
 import ExpoModulesCore
 import VLCKit
 import WebKit
+import React
 
 // This view will be used as a native component. Make sure to inherit from `ExpoView`
 // to apply the proper styling (e.g. border radius and shadows).
@@ -75,11 +76,18 @@ class ExpoVlcPlayerView: ExpoView {
                 self?.onEnd(payload)
             }
         )
+      
         playerViewController.view.frame = self.bounds
         playerViewController.view.autoresizingMask = [
             .flexibleWidth, .flexibleHeight,
         ]
         self.addSubview(playerViewController.view)
+        // 获取当前呈现的 UIViewController
+        if let presentedViewController = RCTPresentedViewController() {
+            print("[VLCPlayer][Init] 找到 Controller")
+            presentedViewController.addChild(playerViewController)
+            playerViewController.didMove(toParent: presentedViewController)
+        }
     }
 
     override func layoutSubviews() {
@@ -89,7 +97,9 @@ class ExpoVlcPlayerView: ExpoView {
     
     deinit {
         print("ExpoVlcPlayerView deinit called")
-        // 移除 playerViewController 的视图
+        playerViewController.willMove(toParent: nil)
+        playerViewController.view.removeFromSuperview()
+        playerViewController.removeFromParent()
         self.playerViewController = nil
      
     }

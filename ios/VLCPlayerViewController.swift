@@ -101,14 +101,14 @@ class VLCPlayerViewController: UIViewController {
             false, options: .notifyOthersOnDeactivation)
 
         // 设置超时时间（单位：毫秒）
-        let timeoutValue: Int32 = 10000
-        // 设置解析选项
-        let withoptions: VLCMediaParsingOptions = [
-            .parseLocal, .parseNetwork, .fetchNetwork, .doInteract,
-        ]
+//        let timeoutValue: Int32 = 10000
+//        // 设置解析选项
+//        let withoptions: VLCMediaParsingOptions = [
+//            .parseLocal, .parseNetwork, .fetchNetwork, .doInteract,
+//        ]
 
         mediaPlayer?.play()
-        mediaPlayer?.media?.parse(options: withoptions, timeout: timeoutValue)
+//        mediaPlayer?.media?.parse(options: withoptions, timeout: timeoutValue)
         currentURL = url
     }
 
@@ -206,16 +206,20 @@ class VLCPlayerViewController: UIViewController {
 
     deinit {
         print("VLCPlayerViewController deinit called")
-        if let player = mediaPlayer {
-            player.stop() // 再次确保停止
-            player.delegate = nil
-            player.drawable = nil
-            player.media?.delegate = nil
-            mediaPlayer = nil // 置空引用
+        do {
+            if let player = mediaPlayer {
+                player.stop()
+                player.delegate = nil
+                player.drawable = nil
+                player.media?.delegate = nil
+            }
+            mediaPlayer = nil
+            currentURL = nil
+            artworkDataTask?.cancel()
+            artworkDataTask = nil
+        } catch {
+            print("Error during deinit: \(error)")
         }
-        currentURL = nil
-        artworkDataTask?.cancel()
-        artworkDataTask = nil
     }
 
 }

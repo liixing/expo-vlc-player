@@ -89,9 +89,8 @@ class ExpoVlcPlayerView: ExpoView {
     deinit {
         print("ExpoVlcPlayerView deinit called")
         // 移除 playerViewController 的视图
-        playerViewController.view.removeFromSuperview()
-        // 置空引用，确保 ARC 回收
-        playerViewController = nil
+        self.playerViewController = nil
+     
     }
     
 }

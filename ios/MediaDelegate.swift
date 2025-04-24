@@ -11,11 +11,11 @@ import VLCKit
 extension VLCPlayerViewController: VLCMediaDelegate {
 
     @objc func mediaDidFinishParsing(_ aMedia: VLCMedia) {
-        updateMetaData(Media: aMedia)
+//        updateMetaData(Media: aMedia)
     }
 
     @objc func mediaMetaDataDidChange(_ aMedia: VLCMedia) {
-        updateMetaData(Media: aMedia)
+//        updateMetaData(Media: aMedia)
         loadVideoInfo(for: aMedia)
     }
 

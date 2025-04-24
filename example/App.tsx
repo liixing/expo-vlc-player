@@ -6,8 +6,6 @@ import { Button, useWindowDimensions, View } from "react-native";
 import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function App() {
-  // const onChangePayload = useEvent(ExpoVlcPlayer, "onChange");
-
   const { width, height } = useWindowDimensions();
   const isLandScape = width > height;
   const [source, setSource] = useState(
@@ -45,11 +43,15 @@ export default function App() {
           console.log(nativeEvent, "load");
         }}
         onProgress={({ nativeEvent }) => {
-          console.log(nativeEvent, "progress");
+          // console.log(nativeEvent, "progress");
         }}
         startTime={30}
         onPlayingChange={({ nativeEvent }) => {
           console.log(nativeEvent.isPlaying, "isPlaying");
+        }}
+        metadata={{
+          title: "Big Buck Bunny",
+          artist: "The Open Movie Project",
         }}
         onEnd={() => {
           console.log("endVideo");

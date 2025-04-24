@@ -64,6 +64,12 @@ public class ExpoVlcPlayerModule: Module {
                 }
             }
             
+            Prop("metadata") { (view: ExpoVlcPlayerView, metadata: VideoMetadata?) in
+                if metadata != nil {
+                    view.playerViewController.metadata = metadata
+                }
+            }
+            
             Events("onLoad", "onPlayingChange", "onProgress","onEnd")
         }
     }

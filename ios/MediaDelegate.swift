@@ -10,12 +10,7 @@ import VLCKit
 
 extension VLCPlayerViewController: VLCMediaDelegate {
 
-    @objc func mediaDidFinishParsing(_ aMedia: VLCMedia) {
-//        updateMetaData(Media: aMedia)
-    }
-
     @objc func mediaMetaDataDidChange(_ aMedia: VLCMedia) {
-//        updateMetaData(Media: aMedia)
         loadVideoInfo(for: aMedia)
     }
 
@@ -79,12 +74,12 @@ extension VLCPlayerViewController: VLCMediaDelegate {
         self.toggleFillScreen(isFull: isScreenFilled)
     }
 
-    func updateMetaData(Media: VLCMedia) {
+    func updateMetaData() {
         var nowPlayingInfo =
             MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
-        let title = Media.metaData.title
-        let artist = Media.metaData.artist
-        let duration = Media.length.value
+        let title = metadata?.title
+        let artist = metadata?.artist
+        let duration = mediaPlayer?.media?.length.value
         let elapsedPlaybackTime = (mediaPlayer?.time.intValue ?? 0) / 1000
 
         nowPlayingInfo[MPMediaItemPropertyTitle] = title
@@ -95,7 +90,7 @@ extension VLCPlayerViewController: VLCMediaDelegate {
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = mediaPlayer?.rate
         nowPlayingInfo[MPNowPlayingInfoPropertyMediaType] =
             MPNowPlayingInfoMediaType.video.rawValue
-        if let artworkUrl = Media.metaData.artworkURL,
+        if let artworkUrl = metadata?.artwork,
             artworkDataTask?.originalRequest?.url != artworkUrl
         {
             artworkDataTask?.cancel()

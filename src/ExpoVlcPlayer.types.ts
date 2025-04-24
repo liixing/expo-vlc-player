@@ -57,11 +57,38 @@ export type ExpoVlcPlayerModuleEvents = {
   isPictureInPictureSupported: () => Promise<boolean>;
 };
 
+/**
+ * Contains information that will be displayed in the now playing notification when the video is playing.
+ * @platform android
+ * @platform ios
+ */
+export type VideoMetadata = {
+  /**
+   * The title of the video.
+   * @platform android
+   * @platform ios
+   */
+  title?: string;
+  /**
+   * Secondary text that will be displayed under the title.
+   * @platform android
+   * @platform ios
+   */
+  artist?: string;
+  /**
+   * The uri of the video artwork.
+   * @platform android
+   * @platform ios
+   */
+  artwork?: string;
+};
+
 export type ExpoVlcPlayerViewProps = {
   source: string;
   pause?: boolean;
   playbackRate?: number;
   seek?: number;
+  metadata?: VideoMetadata;
   isFillScreen?: boolean;
   startTime?: number;
   style?: StyleProp<ViewStyle>;

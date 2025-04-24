@@ -27,6 +27,7 @@ class VLCPlayerViewController: UIViewController {
     private var currentURL: URL?
     public var artworkDataTask: URLSessionDataTask?
     public var isScreenFilled: Bool = false
+    public var metadata : VideoMetadata?
 
     let onLoad: ([String: Any]) -> Void
     let onPlayingChange: ([String: Bool]) -> Void
@@ -213,6 +214,7 @@ class VLCPlayerViewController: UIViewController {
                 player.drawable = nil
                 player.media?.delegate = nil
             }
+            metadata = nil
             mediaPlayer = nil
             currentURL = nil
             artworkDataTask?.cancel()

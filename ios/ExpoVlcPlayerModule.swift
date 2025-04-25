@@ -38,7 +38,7 @@ public class ExpoVlcPlayerModule: Module {
             }
 
             Prop("seek") {
-                (view: ExpoVlcPlayerView, seek: Float) in
+                (view: ExpoVlcPlayerView, seek: Int64) in
                 if view.seek != seek {
                     view.seek = seek
                 }

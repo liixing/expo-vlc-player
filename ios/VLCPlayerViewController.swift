@@ -127,26 +127,18 @@ class VLCPlayerViewController: UIViewController {
         mediaPlayer?.rate = rate
     }
 
-    func seekTime(time: Float) {
-        guard time > 0.0 else {
-            return
-        }
+    func seekTime(time: Int64) {
         guard let player = mediaPlayer else {
             print("Media player is not initialized.")
             return
         }
-
         // 检查播放器状态是否允许跳转
         if player.isSeekable {
-            let seekTime = Int32(time * 1000)
-            player.time = VLCTime(int: seekTime)
-            print("Seeking to time: \(seekTime) ms")
-
-            // 如果播放器当前未播放，尝试重新播放
-            if !player.isPlaying {
-                player.play()
-                print("Player was not playing, restarting playback after seek.")
-            }
+            // 1. 创建 VLCTime 对象，值为毫秒数
+            let targetTimeInMilliseconds: Int64 = time * 1000 // 设置为 30 秒
+            let timeToSet = VLCTime(number: NSNumber(value: targetTimeInMilliseconds))
+            player.time = timeToSet
+      
         }
     }
 

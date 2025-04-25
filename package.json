@@ -1,6 +1,6 @@
 {
   "name": "expo-vlc-player",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "a vlc video player for expo",
   "main": "build/index.js",
   "types": "build/index.d.ts",

@@ -23,17 +23,19 @@ public struct OnLoadEventPayload {
 }
 
 class VLCPlayerViewController: UIViewController {
-    public var mediaPlayer: VLCMediaPlayer? = VLCMediaPlayer()
+    public var mediaPlayer: VLCMediaPlayer?
     private var currentURL: URL?
     public var artworkDataTask: URLSessionDataTask?
     public var isScreenFilled: Bool = false
     public var metadata: VideoMetadata?
-    
+
     let onLoad: ([String: Any]) -> Void
-    let onPlayingChange: ([String: Bool]) -> Void
     let onProgress: ([String: Int32]) -> Void
-    let onEnd: ([String: Any]) -> Void
-    
+    let onBuffering: ([String: Any]) -> Void
+    let onOpen:([String: Any]) -> Void
+    let onNetworkSpeedChange: ([String: Any]) -> Void
+    let onStartPlaying: ([String: Any]) -> Void
+
     // 添加 videoOutputView 作为视频输出容器
     private let videoOutputView: UIView = {
         let view = UIView()
@@ -41,32 +43,36 @@ class VLCPlayerViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     init(
         onVideoLoad: @escaping ([String: Any]) -> Void,
-        onVideoPlayingChange: @escaping ([String: Bool]) -> Void,
         onVideoProgress: @escaping ([String: Int32]) -> Void,
-        onVideoEnd: @escaping ([String: Any]) -> Void
+        onVideoBuffering:@escaping ([String: Any]) -> Void,
+        onVideoOpen:@escaping ([String: Any]) -> Void,
+        onVideoNetworkSpeedChange:@escaping ([String: Any]) -> Void,
+        onVideoStartPlaying:@escaping ([String: Any]) -> Void
     ) {
         self.onLoad = onVideoLoad
-        self.onPlayingChange = onVideoPlayingChange
         self.onProgress = onVideoProgress
-        self.onEnd = onVideoEnd
+        self.onBuffering = onVideoBuffering
+        self.onOpen = onVideoOpen
+        self.onNetworkSpeedChange = onVideoNetworkSpeedChange
+        self.onStartPlaying = onVideoStartPlaying
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .black
         self.view.isUserInteractionEnabled = false
-        
+
         // 将 videoOutputView 添加到视图层次结构中
         self.view.addSubview(videoOutputView)
-        
+
         // 设置 videoOutputView 的约束，填满整个视图
         NSLayoutConstraint.activate([
             videoOutputView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -77,24 +83,30 @@ class VLCPlayerViewController: UIViewController {
             videoOutputView.trailingAnchor.constraint(
                 equalTo: self.view.trailingAnchor),
         ])
-        
+
     }
-    
-    
+
     override func viewWillTransition(
         to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator
     ) {
-        if isScreenFilled {
-            fillScreen(screenSize: size)
-        }
+     
+        coordinator.animate(alongsideTransition: { _ in
+            if self.isScreenFilled {
+                self.fillScreen(screenSize: size)
+            } else {
+                self.shrinkScreen()
+            }
+        }, completion: nil)
+    
         super.viewWillTransition(to: size, with: coordinator)
     }
-    
+
     func playSource(url: URL) {
         guard url != currentURL else { return }
-        if mediaPlayer?.media != nil{
+        if mediaPlayer?.media != nil {
             self.cleanUpPlayer()
         }
+        mediaPlayer = VLCMediaPlayer()
         mediaPlayer?.media = VLCMedia(url: url)
         mediaPlayer?.delegate = self
         mediaPlayer?.media?.delegate = self
@@ -102,20 +114,19 @@ class VLCPlayerViewController: UIViewController {
         mediaPlayer?.drawable = self.videoOutputView
         try? AVAudioSession.sharedInstance().setActive(
             false, options: .notifyOthersOnDeactivation)
-        
         mediaPlayer?.play()
         currentURL = url
     }
-    
+
     func playAndPause(pause: Bool) {
         pause ? mediaPlayer?.pause() : mediaPlayer?.play()
     }
-    
+
     func changePlaybackRate(rate: Float) {
         guard rate != mediaPlayer?.rate else { return }
         mediaPlayer?.rate = rate
     }
-    
+
     func seekTime(time: Float) {
         guard time > 0.0 else {
             return
@@ -124,13 +135,13 @@ class VLCPlayerViewController: UIViewController {
             print("Media player is not initialized.")
             return
         }
-        
+
         // 检查播放器状态是否允许跳转
         if player.isSeekable {
             let seekTime = Int32(time * 1000)
             player.time = VLCTime(int: seekTime)
             print("Seeking to time: \(seekTime) ms")
-            
+
             // 如果播放器当前未播放，尝试重新播放
             if !player.isPlaying {
                 player.play()
@@ -138,7 +149,7 @@ class VLCPlayerViewController: UIViewController {
             }
         }
     }
-    
+
     func setAudioTackAtIndex(index: Int32) {
         let trackIndex = UInt(index)
         if let player = mediaPlayer {
@@ -150,7 +161,7 @@ class VLCPlayerViewController: UIViewController {
             }
         }
     }
-    
+
     func setTextTackAtIndex(index: Int32) {
         let trackIndex = UInt(index)
         if let player = mediaPlayer {
@@ -162,48 +173,47 @@ class VLCPlayerViewController: UIViewController {
             }
         }
     }
-    
+
     func toggleFillScreen(isFull: Bool) {
         isScreenFilled = isFull
         isFull ? fillScreen() : shrinkScreen()
     }
-    
+
     func fillScreen(
         screenSize: CGSize = UIScreen.main.bounds.size
     ) {
         if let videoSize = mediaPlayer?.videoSize {
-            
+
             let fillSize = CGSize.aspectFill(
                 aspectRatio: videoSize, minimumSize: screenSize)
-            
+
             let scale: CGFloat
-            
+
             if fillSize.height > screenSize.height {
                 scale = fillSize.height / screenSize.height
             } else {
                 scale = fillSize.width / screenSize.width
             }
             DispatchQueue.main.async {
-                
                 UIView.animate(withDuration: 0.2) {
                     self.videoOutputView.transform = CGAffineTransform(
                         scaleX: scale, y: scale)
                 }
-                
             }
         }
     }
-    
+
     func shrinkScreen() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
                 self.videoOutputView.transform = .identity
             }
-            
+
         }
     }
-    
-    func cleanUpPlayer(){
+
+    func cleanUpPlayer() {
+        print("VLCPlayerViewController deinit called")
         mediaPlayer?.delegate = nil
         mediaPlayer?.drawable = nil
 
@@ -212,16 +222,15 @@ class VLCPlayerViewController: UIViewController {
             mediaPlayer?.pause()
             mediaPlayer?.stop()
         }
-    }
-
-    deinit {
-        self.cleanUpPlayer()
         mediaPlayer = nil
         metadata = nil
         currentURL = nil
         artworkDataTask?.cancel()
         artworkDataTask = nil
-     
+    }
+
+    deinit {
+       self.cleanUpPlayer()
     }
 
 }

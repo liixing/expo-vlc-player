@@ -45,7 +45,7 @@ export type OnProgressEventPayload = {
   remainingTime: number;
 };
 
-export type OnPlayingChangeEventPayload = {
+export type OnBufferingEventPayload = {
   isPlaying: boolean;
 };
 
@@ -83,6 +83,10 @@ export type VideoMetadata = {
   artwork?: string;
 };
 
+export type OnNetworkSpeedChangeEventPayload = {
+  speed: number;
+};
+
 export type ExpoVlcPlayerViewProps = {
   source: string;
   pause?: boolean;
@@ -93,11 +97,13 @@ export type ExpoVlcPlayerViewProps = {
   startTime?: number;
   style?: StyleProp<ViewStyle>;
   onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
-  onPlayingChange?: (event: {
-    nativeEvent: OnPlayingChangeEventPayload;
-  }) => void;
+  onBuffering?: (event: { nativeEvent: SimpleEventPayload }) => void;
   onProgress?: (event: { nativeEvent: OnProgressEventPayload }) => void;
-  onEnd?: (event: { nativeEvent: SimpleEventPayload }) => void;
+  onNetworkSpeedChange?: (event: {
+    nativeEvent: OnNetworkSpeedChangeEventPayload;
+  }) => void;
+  onOpen?: (event: { nativeEvent: SimpleEventPayload }) => void;
+  onStartPlaying?: (event: { nativeEvent: SimpleEventPayload }) => void;
   textTrackIndex?: number;
   audioTrackIndex?: number;
 };

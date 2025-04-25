@@ -36,41 +36,49 @@ public class ExpoVlcPlayerModule: Module {
                     view.playbackRate = playbackRate
                 }
             }
-            
-            Prop("seek"){
-              (view: ExpoVlcPlayerView, seek: Float) in
+
+            Prop("seek") {
+                (view: ExpoVlcPlayerView, seek: Float) in
                 if view.seek != seek {
                     view.seek = seek
                 }
             }
-            
-            Prop("audioTrackIndex"){
+
+            Prop("audioTrackIndex") {
                 (view: ExpoVlcPlayerView, audioTrackIndex: Int32?) in
-                if view.audioTrackIndex != audioTrackIndex && audioTrackIndex != nil{
+                if view.audioTrackIndex != audioTrackIndex
+                    && audioTrackIndex != nil
+                {
                     view.audioTrackIndex = audioTrackIndex!
                 }
             }
-            
-            Prop("textTrackIndex"){
+
+            Prop("textTrackIndex") {
                 (view: ExpoVlcPlayerView, textTrackIndex: Int32?) in
-                if view.textTrackIndex != textTrackIndex && textTrackIndex != nil{
+                if view.textTrackIndex != textTrackIndex
+                    && textTrackIndex != nil
+                {
                     view.textTrackIndex = textTrackIndex!
                 }
             }
-            
-            Prop("isFillScreen") { (view: ExpoVlcPlayerView, isFillScreen: Bool) in
+
+            Prop("isFillScreen") {
+                (view: ExpoVlcPlayerView, isFillScreen: Bool) in
                 if view.isFillScreen != isFillScreen {
                     view.isFillScreen = isFillScreen
                 }
             }
-            
-            Prop("metadata") { (view: ExpoVlcPlayerView, metadata: VideoMetadata?) in
+
+            Prop("metadata") {
+                (view: ExpoVlcPlayerView, metadata: VideoMetadata?) in
                 if metadata != nil {
                     view.playerViewController.metadata = metadata
                 }
             }
-            
-            Events("onLoad", "onPlayingChange", "onProgress","onEnd")
+
+            Events(
+                "onLoad", "onBuffering", "onProgress", "onNetworkSpeedChange",
+                "onOpen", "onStartPlaying")
         }
     }
 }

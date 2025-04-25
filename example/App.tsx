@@ -39,22 +39,28 @@ export default function App() {
         pause={pause}
         playbackRate={playbackRate}
         seek={seek}
-        onLoad={({ nativeEvent }) => {
-          console.log(nativeEvent, "load");
-        }}
+        // onLoad={({ nativeEvent }) => {
+        //   console.log(nativeEvent, "load");
+        // }}
         onProgress={({ nativeEvent }) => {
           // console.log(nativeEvent, "progress");
         }}
         startTime={30}
-        onPlayingChange={({ nativeEvent }) => {
-          console.log(nativeEvent.isPlaying, "isPlaying");
-        }}
         metadata={{
           title: "Big Buck Bunny",
           artist: "The Open Movie Project",
         }}
-        onEnd={() => {
-          console.log("endVideo");
+        // onNetworkSpeedChange={({ nativeEvent }) => {
+        //   console.log(nativeEvent, "networkSpeedChange");
+        // }}
+        // onOpen={({ nativeEvent }) => {
+        //   console.log(nativeEvent, "open");
+        // }}
+        // onBuffering={({ nativeEvent }) => {
+        //   console.log(nativeEvent, "buffering");
+        // }}
+        onStartPlaying={({ nativeEvent }) => {
+          console.log(nativeEvent, "startPlaying");
         }}
       />
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>

@@ -9,9 +9,12 @@ class ExpoVlcPlayerView: ExpoView {
     public var playerViewController: VLCPlayerViewController!
 
     let onLoad = EventDispatcher()
-    let onPlayingChange = EventDispatcher()
     let onProgress = EventDispatcher()
-    let onEnd = EventDispatcher()
+    let onBuffering = EventDispatcher()
+    let onOpen = EventDispatcher()
+    let onNetworkSpeedChange = EventDispatcher()
+    let onStartPlaying = EventDispatcher()
+
 
     @objc var source: URL = URL(string: "about:blank")! {
         didSet {
@@ -66,14 +69,20 @@ class ExpoVlcPlayerView: ExpoView {
             onVideoLoad: { [weak self] payload in
                 self?.onLoad(payload)
             },
-            onVideoPlayingChange: { [weak self] (payload:[String:Bool]) in
-                self?.onPlayingChange(payload)
-            },
             onVideoProgress: { [weak self] (payload:[String:Int32]) in
                 self?.onProgress(payload)
             },
-            onVideoEnd: { [weak self] payload in
-                self?.onEnd(payload)
+            onVideoBuffering: { [weak self] payload in
+                self?.onBuffering(payload)
+            },
+            onVideoOpen: { [weak self] payload in
+                self?.onOpen(payload)
+            },
+            onVideoNetworkSpeedChange: { [weak self] payload in
+                self?.onNetworkSpeedChange(payload)
+            },
+            onVideoStartPlaying: { [weak self] payload in
+                self?.onStartPlaying(payload)
             }
         )
       
@@ -84,7 +93,6 @@ class ExpoVlcPlayerView: ExpoView {
         self.addSubview(playerViewController.view)
         // 获取当前呈现的 UIViewController
         if let presentedViewController = RCTPresentedViewController() {
-            print("[VLCPlayer][Init] 找到 Controller")
             presentedViewController.addChild(playerViewController)
             playerViewController.didMove(toParent: presentedViewController)
         }
@@ -96,12 +104,10 @@ class ExpoVlcPlayerView: ExpoView {
     }
     
     deinit {
-        print("ExpoVlcPlayerView deinit called")
         playerViewController.willMove(toParent: nil)
         playerViewController.view.removeFromSuperview()
         playerViewController.removeFromParent()
         self.playerViewController = nil
-     
     }
     
 }

@@ -32,7 +32,7 @@ class VLCPlayerViewController: UIViewController {
     let onLoad: ([String: Any]) -> Void
     let onProgress: ([String: Int32]) -> Void
     let onBuffering: ([String: Any]) -> Void
-    let onOpen:([String: Any]) -> Void
+    let onOpen: ([String: Any]) -> Void
     let onNetworkSpeedChange: ([String: Any]) -> Void
     let onStartPlaying: ([String: Any]) -> Void
     let onEnded: ([String: Any]) -> Void
@@ -52,11 +52,11 @@ class VLCPlayerViewController: UIViewController {
     init(
         onVideoLoad: @escaping ([String: Any]) -> Void,
         onVideoProgress: @escaping ([String: Int32]) -> Void,
-        onVideoBuffering:@escaping ([String: Any]) -> Void,
-        onVideoOpen:@escaping ([String: Any]) -> Void,
-        onVideoNetworkSpeedChange:@escaping ([String: Any]) -> Void,
-        onVideoStartPlaying:@escaping ([String: Any]) -> Void,
-        onVideoEnded:@escaping ([String: Any]) -> Void
+        onVideoBuffering: @escaping ([String: Any]) -> Void,
+        onVideoOpen: @escaping ([String: Any]) -> Void,
+        onVideoNetworkSpeedChange: @escaping ([String: Any]) -> Void,
+        onVideoStartPlaying: @escaping ([String: Any]) -> Void,
+        onVideoEnded: @escaping ([String: Any]) -> Void
     ) {
         self.onLoad = onVideoLoad
         self.onProgress = onVideoProgress
@@ -92,13 +92,14 @@ class VLCPlayerViewController: UIViewController {
     override func viewWillTransition(
         to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator
     ) {
-     
-        coordinator.animate(alongsideTransition: { _ in
-            if self.isScreenFilled {
-                self.fillScreen(screenSize: size)
-            } 
-        }, completion: nil)
-    
+
+        coordinator.animate(
+            alongsideTransition: { _ in
+                if self.isScreenFilled {
+                    self.fillScreen(screenSize: size)
+                }
+            }, completion: nil)
+
         super.viewWillTransition(to: size, with: coordinator)
     }
 
@@ -136,10 +137,11 @@ class VLCPlayerViewController: UIViewController {
         // 检查播放器状态是否允许跳转
         if player.isSeekable {
             // 1. 创建 VLCTime 对象，值为毫秒数
-            let targetTimeInMilliseconds: Int64 = time * 1000 // 设置为 30 秒
-            let timeToSet = VLCTime(number: NSNumber(value: targetTimeInMilliseconds))
+            let targetTimeInMilliseconds: Int64 = time * 1000  // 设置为 30 秒
+            let timeToSet = VLCTime(
+                number: NSNumber(value: targetTimeInMilliseconds))
             player.time = timeToSet
-      
+
         }
     }
 
@@ -175,7 +177,7 @@ class VLCPlayerViewController: UIViewController {
     func fillScreen(
         screenSize: CGSize = UIScreen.main.bounds.size
     ) {
-        if let videoSize = mediaPlayer?.videoSize {
+        if let videoSize = mediaPlayer?.videoSize, videoSize.width > 0 {
 
             let fillSize = CGSize.aspectFill(
                 aspectRatio: videoSize, minimumSize: screenSize)
@@ -188,6 +190,13 @@ class VLCPlayerViewController: UIViewController {
                 scale = fillSize.width / screenSize.width
             }
             DispatchQueue.main.async {
+                // 动态获取最新的屏幕尺寸
+                let currentScreenSize = UIScreen.main.bounds.size
+                // 确保 videoOutputView 的中心与屏幕中心对齐
+                self.videoOutputView.center = CGPoint(
+                    x: currentScreenSize.width / 2,
+                    y: currentScreenSize.height / 2
+                )
                 UIView.animate(withDuration: 0.2) {
                     self.videoOutputView.transform = CGAffineTransform(
                         scaleX: scale, y: scale)
@@ -223,7 +232,7 @@ class VLCPlayerViewController: UIViewController {
     }
 
     deinit {
-       self.cleanUpPlayer()
+        self.cleanUpPlayer()
     }
 
 }
@@ -249,3 +258,4 @@ extension CGSize {
         return minimumSize
     }
 }
+  

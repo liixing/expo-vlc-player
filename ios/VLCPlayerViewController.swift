@@ -35,6 +35,7 @@ class VLCPlayerViewController: UIViewController {
     let onOpen:([String: Any]) -> Void
     let onNetworkSpeedChange: ([String: Any]) -> Void
     let onStartPlaying: ([String: Any]) -> Void
+    let onEnded: ([String: Any]) -> Void
 
     // 添加 videoOutputView 作为视频输出容器
     private let videoOutputView: UIView = {
@@ -54,7 +55,8 @@ class VLCPlayerViewController: UIViewController {
         onVideoBuffering:@escaping ([String: Any]) -> Void,
         onVideoOpen:@escaping ([String: Any]) -> Void,
         onVideoNetworkSpeedChange:@escaping ([String: Any]) -> Void,
-        onVideoStartPlaying:@escaping ([String: Any]) -> Void
+        onVideoStartPlaying:@escaping ([String: Any]) -> Void,
+        onVideoEnded:@escaping ([String: Any]) -> Void
     ) {
         self.onLoad = onVideoLoad
         self.onProgress = onVideoProgress
@@ -62,6 +64,7 @@ class VLCPlayerViewController: UIViewController {
         self.onOpen = onVideoOpen
         self.onNetworkSpeedChange = onVideoNetworkSpeedChange
         self.onStartPlaying = onVideoStartPlaying
+        self.onEnded = onVideoEnded
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -93,9 +96,7 @@ class VLCPlayerViewController: UIViewController {
         coordinator.animate(alongsideTransition: { _ in
             if self.isScreenFilled {
                 self.fillScreen(screenSize: size)
-            } else {
-                self.shrinkScreen()
-            }
+            } 
         }, completion: nil)
     
         super.viewWillTransition(to: size, with: coordinator)

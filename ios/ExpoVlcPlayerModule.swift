@@ -78,7 +78,7 @@ public class ExpoVlcPlayerModule: Module {
 
             Events(
                 "onLoad", "onBuffering", "onProgress", "onNetworkSpeedChange",
-                "onOpen", "onStartPlaying")
+                "onOpen", "onStartPlaying","onEnded")
         }
     }
 }

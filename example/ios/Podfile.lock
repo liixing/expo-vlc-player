@@ -58,7 +58,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - ExpoVlcPlayer (0.1.0):
+  - ExpoVlcPlayer (0.2.6):
     - ExpoModulesCore
     - VLCKit (= 4.0.0a11)
   - fast_float (6.1.4)
@@ -1864,7 +1864,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
   ExpoModulesCore: c25d77625038b1968ea1afefc719862c0d8dd993
   ExpoScreenOrientation: af8b31d3164239a4ef3ea0b32bd63fb65df70d58
-  ExpoVlcPlayer: 12acac685b4f263d650610b9a189e74acef7109f
+  ExpoVlcPlayer: 6b4875c2669f41991f30a88d054fd8c27b27efc6
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 7605ea4810e0e10ae4815292433c09bf4324ba45
   fmt: 01b82d4ca6470831d1cc0852a1af644be019e8f6

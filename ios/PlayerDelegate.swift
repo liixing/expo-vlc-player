@@ -31,6 +31,7 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
         case .paused:
             break
         case .stopped:
+            self.onEnded(["ended":true])
             break
         case .stopping:
             break

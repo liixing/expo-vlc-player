@@ -14,6 +14,7 @@ class ExpoVlcPlayerView: ExpoView {
     let onOpen = EventDispatcher()
     let onNetworkSpeedChange = EventDispatcher()
     let onStartPlaying = EventDispatcher()
+    let onEnded = EventDispatcher()
 
 
     @objc var source: URL = URL(string: "about:blank")! {
@@ -83,6 +84,9 @@ class ExpoVlcPlayerView: ExpoView {
             },
             onVideoStartPlaying: { [weak self] payload in
                 self?.onStartPlaying(payload)
+            },
+            onVideoEnded: { [weak self] payload in
+                self?.onEnded(payload)
             }
         )
       

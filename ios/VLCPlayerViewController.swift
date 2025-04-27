@@ -28,13 +28,13 @@ class VLCPlayerViewController: UIViewController {
     public var artworkDataTask: URLSessionDataTask?
     public var isScreenFilled: Bool = false
     public var metadata: VideoMetadata?
+    public var startTime: Int32 = 0
 
     let onLoad: ([String: Any]) -> Void
     let onProgress: ([String: Int32]) -> Void
     let onBuffering: ([String: Any]) -> Void
     let onOpen: ([String: Any]) -> Void
     let onNetworkSpeedChange: ([String: Any]) -> Void
-    let onStartPlaying: ([String: Any]) -> Void
     let onEnded: ([String: Any]) -> Void
 
     // 添加 videoOutputView 作为视频输出容器
@@ -55,7 +55,6 @@ class VLCPlayerViewController: UIViewController {
         onVideoBuffering: @escaping ([String: Any]) -> Void,
         onVideoOpen: @escaping ([String: Any]) -> Void,
         onVideoNetworkSpeedChange: @escaping ([String: Any]) -> Void,
-        onVideoStartPlaying: @escaping ([String: Any]) -> Void,
         onVideoEnded: @escaping ([String: Any]) -> Void
     ) {
         self.onLoad = onVideoLoad
@@ -63,7 +62,6 @@ class VLCPlayerViewController: UIViewController {
         self.onBuffering = onVideoBuffering
         self.onOpen = onVideoOpen
         self.onNetworkSpeedChange = onVideoNetworkSpeedChange
-        self.onStartPlaying = onVideoStartPlaying
         self.onEnded = onVideoEnded
         super.init(nibName: nil, bundle: nil)
     }
@@ -109,7 +107,7 @@ class VLCPlayerViewController: UIViewController {
             self.cleanUpPlayer()
         }
         mediaPlayer = VLCMediaPlayer()
-        mediaPlayer?.media = VLCMedia(url: url)
+        mediaPlayer?.media =  VLCMedia(url: url)
         mediaPlayer?.delegate = self
         mediaPlayer?.media?.delegate = self
         mediaPlayer?.timeChangeUpdateInterval = 0.3
@@ -129,19 +127,14 @@ class VLCPlayerViewController: UIViewController {
         mediaPlayer?.rate = rate
     }
 
-    func seekTime(time: Int64) {
+    func seekTime(time: Int32) {
         guard let player = mediaPlayer else {
             print("Media player is not initialized.")
             return
         }
-        // 检查播放器状态是否允许跳转
         if player.isSeekable {
-            // 1. 创建 VLCTime 对象，值为毫秒数
-            let targetTimeInMilliseconds: Int64 = time * 1000  // 设置为 30 秒
-            let timeToSet = VLCTime(
-                number: NSNumber(value: targetTimeInMilliseconds))
-            player.time = timeToSet
-
+            let targetTimeInMilliseconds: Int32 = time * 1000  // 设置为 30
+            player.jump(withOffset: targetTimeInMilliseconds)
         }
     }
 
@@ -177,7 +170,7 @@ class VLCPlayerViewController: UIViewController {
     func fillScreen(
         screenSize: CGSize = UIScreen.main.bounds.size
     ) {
-        if let videoSize = mediaPlayer?.videoSize, videoSize.width > 0 {
+        if let videoSize = mediaPlayer?.videoSize, mediaPlayer?.hasVideoOut != nil {
 
             let fillSize = CGSize.aspectFill(
                 aspectRatio: videoSize, minimumSize: screenSize)
@@ -190,13 +183,6 @@ class VLCPlayerViewController: UIViewController {
                 scale = fillSize.width / screenSize.width
             }
             DispatchQueue.main.async {
-                // 动态获取最新的屏幕尺寸
-                let currentScreenSize = UIScreen.main.bounds.size
-                // 确保 videoOutputView 的中心与屏幕中心对齐
-                self.videoOutputView.center = CGPoint(
-                    x: currentScreenSize.width / 2,
-                    y: currentScreenSize.height / 2
-                )
                 UIView.animate(withDuration: 0.2) {
                     self.videoOutputView.transform = CGAffineTransform(
                         scaleX: scale, y: scale)
@@ -258,4 +244,3 @@ extension CGSize {
         return minimumSize
     }
 }
-  

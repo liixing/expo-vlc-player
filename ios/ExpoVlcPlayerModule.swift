@@ -38,9 +38,16 @@ public class ExpoVlcPlayerModule: Module {
             }
 
             Prop("seek") {
-                (view: ExpoVlcPlayerView, seek: Int64) in
+                (view: ExpoVlcPlayerView, seek: Int32) in
                 if view.seek != seek {
                     view.seek = seek
+                }
+            }
+
+            Prop("startTime") {
+                (view: ExpoVlcPlayerView, startTime: Int32) in
+                if view.startTime != startTime {
+                    view.startTime = startTime
                 }
             }
 
@@ -78,7 +85,7 @@ public class ExpoVlcPlayerModule: Module {
 
             Events(
                 "onLoad", "onBuffering", "onProgress", "onNetworkSpeedChange",
-                "onOpen", "onStartPlaying","onEnded")
+                "onOpen", "onEnded")
         }
     }
 }

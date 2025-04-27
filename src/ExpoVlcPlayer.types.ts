@@ -103,7 +103,6 @@ export type ExpoVlcPlayerViewProps = {
     nativeEvent: OnNetworkSpeedChangeEventPayload;
   }) => void;
   onOpen?: (event: { nativeEvent: SimpleEventPayload }) => void;
-  onStartPlaying?: (event: { nativeEvent: SimpleEventPayload }) => void;
   onEnded?: (event: { nativeEvent: SimpleEventPayload }) => void;
   textTrackIndex?: number;
   audioTrackIndex?: number;

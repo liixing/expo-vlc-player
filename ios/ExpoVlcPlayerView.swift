@@ -13,7 +13,6 @@ class ExpoVlcPlayerView: ExpoView {
     let onBuffering = EventDispatcher()
     let onOpen = EventDispatcher()
     let onNetworkSpeedChange = EventDispatcher()
-    let onStartPlaying = EventDispatcher()
     let onEnded = EventDispatcher()
 
 
@@ -36,9 +35,15 @@ class ExpoVlcPlayerView: ExpoView {
         }
     }
     
-    @objc var seek: Int64 = 0{
+    @objc var seek: Int32 = 0 {
         didSet{
             playerViewController.seekTime(time: seek)
+        }
+    }
+    
+    @objc var startTime: Int32 = 0 {
+        didSet{
+            playerViewController.startTime = startTime
         }
     }
     
@@ -81,9 +86,6 @@ class ExpoVlcPlayerView: ExpoView {
             },
             onVideoNetworkSpeedChange: { [weak self] payload in
                 self?.onNetworkSpeedChange(payload)
-            },
-            onVideoStartPlaying: { [weak self] payload in
-                self?.onStartPlaying(payload)
             },
             onVideoEnded: { [weak self] payload in
                 self?.onEnded(payload)

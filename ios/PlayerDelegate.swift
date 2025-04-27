@@ -13,25 +13,25 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
             print("Media player state is nil")
             return
         }
-        
+
         // 使用 switch 语句处理状态
         switch state {
         case .opening:
             updateNetworkSpeed()
-            self.onOpen(["open" : true])
+            self.onOpen(["open": true])
             break
         case .buffering:
             updateNetworkSpeed()
-            self.onBuffering(["buffering" : true])
+            self.onBuffering(["buffering": true])
             break
         case .playing:
-            self.onStartPlaying(["startplaying":true])
             updateNetworkSpeed()
+            seekByStartTime()
             break
         case .paused:
             break
         case .stopped:
-            self.onEnded(["ended":true])
+            self.onEnded(["ended": true])
             break
         case .stopping:
             break
@@ -42,8 +42,13 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
             print("Unknown media player state: \(state)")
         }
     }
-    
-    
+
+    func seekByStartTime() {
+        if startTime > 0 {
+            seekTime(time: startTime)
+        }
+    }
+
     func mediaPlayerTimeChanged(_ aNotification: Notification) {
         let currentTime = mediaPlayer?.time.intValue ?? 0
         let remainingTime = mediaPlayer?.remainingTime?.intValue ?? 0
@@ -54,10 +59,10 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
         self.onProgress(payload)
         updateNetworkSpeed()
     }
-    
-    func updateNetworkSpeed(){
+
+    func updateNetworkSpeed() {
         if let stats = mediaPlayer?.media?.statistics {
-            self.onNetworkSpeedChange(["speed":stats.inputBitrate])
+            self.onNetworkSpeedChange(["speed": stats.inputBitrate])
         }
     }
 }

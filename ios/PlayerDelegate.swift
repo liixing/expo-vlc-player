@@ -26,7 +26,6 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
             break
         case .playing:
             updateNetworkSpeed()
-            seekByStartTime()
             break
         case .paused:
             break
@@ -43,11 +42,6 @@ extension VLCPlayerViewController: VLCMediaPlayerDelegate {
         }
     }
 
-    func seekByStartTime() {
-        if startTime > 0 {
-            seekTime(time: startTime)
-        }
-    }
 
     func mediaPlayerTimeChanged(_ aNotification: Notification) {
         let currentTime = mediaPlayer?.time.intValue ?? 0

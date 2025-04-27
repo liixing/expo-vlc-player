@@ -34,6 +34,7 @@ export default function App() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ExpoVlcPlayerView
+        startTime={10}
         source={source}
         style={{ width: "100%", height: "100%" }}
         pause={pause}
@@ -45,7 +46,6 @@ export default function App() {
         onProgress={({ nativeEvent }) => {
           // console.log(nativeEvent, "progress");
         }}
-        startTime={30}
         metadata={{
           title: "Big Buck Bunny",
           artist: "The Open Movie Project",
@@ -59,9 +59,6 @@ export default function App() {
         // onBuffering={({ nativeEvent }) => {
         //   console.log(nativeEvent, "buffering");
         // }}
-        onStartPlaying={({ nativeEvent }) => {
-          console.log(nativeEvent, "startPlaying");
-        }}
       />
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
         <Button title={`full`} onPress={toggleFull} />

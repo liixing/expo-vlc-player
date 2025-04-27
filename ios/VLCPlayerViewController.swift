@@ -107,7 +107,11 @@ class VLCPlayerViewController: UIViewController {
             self.cleanUpPlayer()
         }
         mediaPlayer = VLCMediaPlayer()
-        mediaPlayer?.media =  VLCMedia(url: url)
+        let media = VLCMedia.init(url: url)
+        if startTime > 0 {
+            media?.addOption(":start-time=\(startTime)")
+        }
+        mediaPlayer?.media = media
         mediaPlayer?.delegate = self
         mediaPlayer?.media?.delegate = self
         mediaPlayer?.timeChangeUpdateInterval = 0.3

@@ -16,13 +16,7 @@ class ExpoVlcPlayerView: ExpoView {
     let onEnded = EventDispatcher()
 
 
-    @objc var source: URL = URL(string: "about:blank")! {
-        didSet {
-            playerViewController.playSource(url: source)
-            playerViewController.updateMetaData()
-        }
-    }
-    
+
     @objc var pause: Bool = false {
         didSet {
             playerViewController.playAndPause(pause: pause)
@@ -41,11 +35,13 @@ class ExpoVlcPlayerView: ExpoView {
         }
     }
     
-    @objc var startTime: Int32 = 0 {
-        didSet{
-            playerViewController.startTime = startTime
+    @objc var source: URL = URL(string: "about:blank")! {
+        didSet {
+            playerViewController.playSource(url: source)
+            playerViewController.updateMetaData()
         }
     }
+    
     
     
     @objc var audioTrackIndex: Int32 = -2 {

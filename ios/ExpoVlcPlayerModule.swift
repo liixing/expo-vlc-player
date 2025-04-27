@@ -46,8 +46,8 @@ public class ExpoVlcPlayerModule: Module {
 
             Prop("startTime") {
                 (view: ExpoVlcPlayerView, startTime: Int32) in
-                if view.startTime != startTime {
-                    view.startTime = startTime
+                if view.playerViewController.startTime != startTime{
+                    view.playerViewController.startTime = startTime
                 }
             }
 

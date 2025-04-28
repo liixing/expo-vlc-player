@@ -1,5 +1,5 @@
 import ExpoModulesCore
-import VLCKit
+import MobileVLCKit
 import WebKit
 import React
 

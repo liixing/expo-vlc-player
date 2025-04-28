@@ -8,7 +8,7 @@
 import AVFoundation
 import MediaPlayer
 import UIKit
-import VLCKit
+import MobileVLCKit
 
 struct Track {
     let id: Int
@@ -29,6 +29,7 @@ class VLCPlayerViewController: UIViewController {
     public var isScreenFilled: Bool = false
     public var metadata: VideoMetadata?
     public var startTime: Int32 = 0
+    public var videoInfo: [String:Any]?
 
     let onLoad: ([String: Any]) -> Void
     let onProgress: ([String: Int32]) -> Void
@@ -108,13 +109,9 @@ class VLCPlayerViewController: UIViewController {
         }
         mediaPlayer = VLCMediaPlayer()
         let media = VLCMedia.init(url: url)
-        if startTime > 0 {
-            media?.addOption(":start-time=\(startTime)")
-        }
         mediaPlayer?.media = media
         mediaPlayer?.delegate = self
         mediaPlayer?.media?.delegate = self
-        mediaPlayer?.timeChangeUpdateInterval = 0.3
         mediaPlayer?.drawable = self.videoOutputView
         try? AVAudioSession.sharedInstance().setActive(
             false, options: .notifyOthersOnDeactivation)
@@ -137,32 +134,21 @@ class VLCPlayerViewController: UIViewController {
             return
         }
         if player.isSeekable {
-            let targetTimeInMilliseconds: Int32 = time * 1000  // 设置为 30
-            player.jump(withOffset: targetTimeInMilliseconds)
+            let targetTimeInMilliseconds: Int32 = time * 1000
+            let VLCTime = VLCTime(int: targetTimeInMilliseconds)
+            player.time = VLCTime
         }
     }
 
     func setAudioTackAtIndex(index: Int32) {
-        let trackIndex = UInt(index)
         if let player = mediaPlayer {
-            let audioTracks = player.audioTracks
-            let count = audioTracks.count
-            if trackIndex >= 0 && trackIndex < count {
-                let track = audioTracks[Int(trackIndex)]
-                track.isSelectedExclusively = true
-            }
+            player.currentAudioTrackIndex = index
         }
     }
 
     func setTextTackAtIndex(index: Int32) {
-        let trackIndex = UInt(index)
         if let player = mediaPlayer {
-            let textTracks = player.textTracks
-            let count = textTracks.count
-            if trackIndex >= 0 && trackIndex < count {
-                let track = textTracks[Int(trackIndex)]
-                track.isSelectedExclusively = true
-            }
+            player.currentVideoSubTitleIndex = index
         }
     }
 
@@ -219,6 +205,7 @@ class VLCPlayerViewController: UIViewController {
         currentURL = nil
         artworkDataTask?.cancel()
         artworkDataTask = nil
+        videoInfo = nil
     }
 
     deinit {

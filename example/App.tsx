@@ -2,7 +2,13 @@ import { useEvent } from "expo";
 import ExpoVlcPlayer, { ExpoVlcPlayerView } from "expo-vlc-player";
 import React from "react";
 import { useState } from "react";
-import { Button, useWindowDimensions, View } from "react-native";
+import {
+  Button,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function App() {
@@ -40,11 +46,11 @@ export default function App() {
         pause={pause}
         playbackRate={playbackRate}
         seek={seek}
-        // onLoad={({ nativeEvent }) => {
-        //   console.log(nativeEvent, "load");
-        // }}
         onProgress={({ nativeEvent }) => {
-          // console.log(nativeEvent, "progress");
+          console.log(nativeEvent, "progress");
+        }}
+        onLoad={({ nativeEvent }) => {
+          console.log(nativeEvent, "load");
         }}
         metadata={{
           title: "Big Buck Bunny",
@@ -61,7 +67,18 @@ export default function App() {
         // }}
       />
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-        <Button title={`full`} onPress={toggleFull} />
+        <Pressable
+          onPress={() => {
+            setSeek(30);
+          }}
+          style={{
+            backgroundColor: "red",
+            padding: 10,
+            borderRadius: 10,
+          }}
+        >
+          <Text>Change source</Text>
+        </Pressable>
         <Button
           title="Change source"
           onPress={() => {

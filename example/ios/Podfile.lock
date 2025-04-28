@@ -58,9 +58,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - ExpoVlcPlayer (0.2.6):
+  - ExpoVlcPlayer (0.2.9):
     - ExpoModulesCore
-    - VLCKit (= 4.0.0a11)
+    - MobileVLCKit (= 3.6.0)
   - fast_float (6.1.4)
   - FBLazyVector (0.76.9)
   - fmt (11.0.2)
@@ -68,6 +68,7 @@ PODS:
   - hermes-engine (0.76.9):
     - hermes-engine/Pre-built (= 0.76.9)
   - hermes-engine/Pre-built (0.76.9)
+  - MobileVLCKit (3.6.0)
   - RCT-Folly (2024.10.14.00):
     - boost
     - DoubleConversion
@@ -1619,7 +1620,6 @@ PODS:
     - React-perflogger
     - React-utils (= 0.76.9)
   - SocketRocket (0.7.1)
-  - VLCKit (4.0.0a11)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1701,8 +1701,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - MobileVLCKit
     - SocketRocket
-    - VLCKit
 
 EXTERNAL SOURCES:
   boost:
@@ -1864,12 +1864,13 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
   ExpoModulesCore: c25d77625038b1968ea1afefc719862c0d8dd993
   ExpoScreenOrientation: af8b31d3164239a4ef3ea0b32bd63fb65df70d58
-  ExpoVlcPlayer: 6b4875c2669f41991f30a88d054fd8c27b27efc6
+  ExpoVlcPlayer: 786337224580fe3cb2f75634c877f9534bdd45ba
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 7605ea4810e0e10ae4815292433c09bf4324ba45
   fmt: 01b82d4ca6470831d1cc0852a1af644be019e8f6
   glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
   hermes-engine: 9e868dc7be781364296d6ee2f56d0c1a9ef0bb11
+  MobileVLCKit: 8fe98ae53b7464f32e4bdf527cc7d53053e4d3a5
   RCT-Folly: ea9d9256ba7f9322ef911169a9f696e5857b9e17
   RCTDeprecation: ebe712bb05077934b16c6bf25228bdec34b64f83
   RCTRequired: ca91e5dd26b64f577b528044c962baf171c6b716
@@ -1927,7 +1928,6 @@ SPEC CHECKSUMS:
   ReactCodegen: f853a20cc9125c5521c8766b4b49375fec20648b
   ReactCommon: 300d8d9c5cb1a6cd79a67cf5d8f91e4d477195f9
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  VLCKit: d4f0baaef03f636da4803c34110bae43de3bec79
   Yoga: feb4910aba9742cfedc059e2b2902e22ffe9954a
 
 PODFILE CHECKSUM: 02d02960c656a90eac17d738b56b39df7e0fcf02

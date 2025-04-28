@@ -6,74 +6,9 @@
 //
 
 import MediaPlayer
-import VLCKit
+import MobileVLCKit
 
 extension VLCPlayerViewController: VLCMediaDelegate {
-
-    @objc func mediaMetaDataDidChange(_ aMedia: VLCMedia) {
-        loadVideoInfo(for: aMedia)
-    }
-
-    func loadVideoInfo(for media: VLCMedia) {
-        if mediaPlayer?.audioTracks.count == 0 {
-            return
-        }
-        let duration = Double(media.length.intValue)
-        var audioTracks: [Track] = []
-        var textTracks: [Track] = []
-
-        // 获取音频轨道
-        if let audotracks = mediaPlayer?.audioTracks, audotracks.count > 0 {
-            for (index, track) in audotracks.enumerated() {
-                let newTrack = Track(
-                    id: index,
-                    name: track.trackName,
-                    isSelected: track.isSelectedExclusively
-                )
-                audioTracks.append(newTrack)
-            }
-        }
-
-        // 获取字幕轨道
-        if let texttracks = mediaPlayer?.textTracks, texttracks.count > 0 {
-            for (index, track) in texttracks.enumerated() {
-                let newTrack = Track(
-                    id: index,
-                    name: track.trackName,
-                    isSelected: track.isSelectedExclusively
-                )
-                textTracks.append(newTrack)
-            }
-        }
-
-        let videoSize: [String: Double] = [
-            "width": Double(mediaPlayer?.videoSize.width ?? 0),
-            "height": Double(mediaPlayer?.videoSize.height ?? 0),
-        ]
-
-        let payload: [String: Any] = [
-            "duration": duration,
-            "videoSize": videoSize,
-            "audioTracks": audioTracks.map {
-                [
-                    "id": $0.id,
-                    "name": $0.name,
-                    "isSelected": $0.isSelected,
-                ]
-            },
-            "textTracks": textTracks.map {
-                [
-                    "id": $0.id,
-                    "name": $0.name,
-                    "isSelected": $0.isSelected,
-                ]
-            },
-        ]
-
-        self.onLoad(payload)
-        self.toggleFillScreen(isFull: isScreenFilled)
-    }
-
     func updateMetaData() {
         var nowPlayingInfo =
             MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
@@ -88,8 +23,8 @@ extension VLCPlayerViewController: VLCMediaDelegate {
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] =
             elapsedPlaybackTime
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = mediaPlayer?.rate
-        nowPlayingInfo[MPNowPlayingInfoPropertyMediaType] =
-            MPNowPlayingInfoMediaType.video.rawValue
+//        nowPlayingInfo[MPNowPlayingInfoPropertyMediaType] =
+//            MPNowPlayingInfoMediaType.video.rawValue
         if let artworkUrl = metadata?.artwork,
             artworkDataTask?.originalRequest?.url != artworkUrl
         {

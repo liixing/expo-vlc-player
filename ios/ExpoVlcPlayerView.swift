@@ -1,6 +1,5 @@
 import ExpoModulesCore
 import MobileVLCKit
-import WebKit
 import React
 
 // This view will be used as a native component. Make sure to inherit from `ExpoView`
@@ -88,7 +87,7 @@ class ExpoVlcPlayerView: ExpoView {
             }
         )
       
-        playerViewController.view.frame = self.bounds
+        playerViewController.view.frame = UIScreen.main.bounds
         playerViewController.view.autoresizingMask = [
             .flexibleWidth, .flexibleHeight,
         ]
@@ -102,7 +101,7 @@ class ExpoVlcPlayerView: ExpoView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        playerViewController.view.frame = self.bounds
+        playerViewController.view.frame = UIScreen.main.bounds
     }
     
     deinit {
